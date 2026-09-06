@@ -99,7 +99,7 @@ export async function PUT(request: NextRequest) {
       updateData.onboardedPlan = onboardedPlan || 'PREMIUM';
       updateData.onboardedAt = assignment.onboardedAt || new Date();
       if (!assignment.contactedAt) updateData.contactedAt = new Date();
-    } else if (contactStatus === 'CONTACTED' || contactStatus === 'IN_PROCESS') {
+    } else if (contactStatus === 'CONTACTED' || contactStatus === 'MESSAGED' || contactStatus === 'CALLED' || contactStatus === 'IN_PROCESS') {
       updateData.contactedAt = assignment.contactedAt || new Date();
     }
 

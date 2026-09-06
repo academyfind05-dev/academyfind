@@ -74,6 +74,8 @@ interface SalesTerritoryMapProps {
 
 const STATUS_COLORS: Record<string, { bg: string; border: string; text: string; label: string }> = {
   NOT_CONTACTED: { bg: "#f43f5e", border: "#9f1239", text: "#ffffff", label: "Not Contacted" },
+  MESSAGED: { bg: "#2563eb", border: "#1d4ed8", text: "#ffffff", label: "Messaged" },
+  CALLED: { bg: "#0d9488", border: "#0f766e", text: "#ffffff", label: "Called" },
   CONTACTED: { bg: "#f59e0b", border: "#b45309", text: "#ffffff", label: "Contacted" },
   IN_PROCESS: { bg: "#0284c7", border: "#0369a1", text: "#ffffff", label: "In Process" },
   ONBOARDED: { bg: "#10b981", border: "#047857", text: "#ffffff", label: "Onboarded" },
@@ -281,6 +283,8 @@ export default function SalesTerritoryMap({
             >
               <option value="ALL">All Statuses ({validInstitutes.length})</option>
               <option value="NOT_CONTACTED">🔴 Not Contacted</option>
+              <option value="MESSAGED">💬 Messaged</option>
+              <option value="CALLED">📞 Called</option>
               <option value="CONTACTED">🟡 Contacted</option>
               <option value="IN_PROCESS">🔵 In Process</option>
               <option value="ONBOARDED">🟢 Onboarded</option>

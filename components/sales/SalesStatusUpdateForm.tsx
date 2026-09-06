@@ -38,7 +38,7 @@ export default function SalesStatusUpdateForm({
                 body: JSON.stringify({
                     assignmentId,
                     contactStatus: status,
-                    interest: status === "CONTACTED" ? interest : undefined,
+                    interest: (status === "CONTACTED" || status === "MESSAGED" || status === "CALLED") ? interest : undefined,
                     remark: remark || undefined,
                     onboardedPlan: status === "ONBOARDED" ? plan : undefined,
                 }),
@@ -75,6 +75,8 @@ export default function SalesStatusUpdateForm({
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-medium text-slate-700 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-400 outline-none transition-all"
                 >
                     <option value="NOT_CONTACTED">Not Contacted</option>
+                    <option value="MESSAGED">Messaged</option>
+                    <option value="CALLED">Called</option>
                     <option value="CONTACTED">Contacted</option>
                     <option value="IN_PROCESS">In Process</option>
                     <option value="ONBOARDED">Onboarded</option>
@@ -82,8 +84,8 @@ export default function SalesStatusUpdateForm({
                 </select>
             </div>
 
-            {/* Interest - shown when CONTACTED */}
-            {status === "CONTACTED" && (
+            {/* Interest - shown when CONTACTED, MESSAGED, or CALLED */}
+            {(status === "CONTACTED" || status === "MESSAGED" || status === "CALLED") && (
                 <div>
                     <label className="block text-xs font-semibold text-slate-500 mb-1.5">Interest Level</label>
                     <div className="flex gap-3">

@@ -8,6 +8,18 @@ export function SalesStatusBadge({ status }: { status: string }) {
             label: "Not Contacted",
             dot: "bg-slate-400",
         },
+        MESSAGED: {
+            bg: "bg-blue-50",
+            text: "text-blue-700",
+            label: "Messaged",
+            dot: "bg-blue-500",
+        },
+        CALLED: {
+            bg: "bg-teal-50",
+            text: "text-teal-700",
+            label: "Called",
+            dot: "bg-teal-500",
+        },
         CONTACTED: {
             bg: "bg-amber-50",
             text: "text-amber-700",

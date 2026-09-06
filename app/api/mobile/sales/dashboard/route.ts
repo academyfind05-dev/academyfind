@@ -56,6 +56,8 @@ export async function GET(request: NextRequest) {
 
     const total = assignments.length;
     const notContacted = assignments.filter((a: any) => a.contactStatus === "NOT_CONTACTED").length;
+    const messaged = assignments.filter((a: any) => a.contactStatus === "MESSAGED").length;
+    const called = assignments.filter((a: any) => a.contactStatus === "CALLED").length;
     const contacted = assignments.filter((a: any) => a.contactStatus === "CONTACTED").length;
     const onboarded = assignments.filter((a: any) => a.contactStatus === "ONBOARDED").length;
     const upgraded = assignments.filter((a: any) => a.contactStatus === "UPGRADED").length;
@@ -77,7 +79,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       data: {
-        stats: { total, notContacted, contacted, onboarded, upgraded, overdue },
+        stats: { total, notContacted, messaged, called, contacted, onboarded, upgraded, overdue },
         upcomingDeadlines,
         assignedAreas,
         recentActivity: assignments.slice(0, 5)

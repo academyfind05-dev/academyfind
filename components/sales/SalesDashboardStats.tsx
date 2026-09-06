@@ -1,11 +1,13 @@
 "use client";
 
-import { TrendingUp, Phone, PhoneOff, CheckCircle2, AlertTriangle, Rocket, Headphones } from "lucide-react";
+import { TrendingUp, Phone, PhoneOff, CheckCircle2, AlertTriangle, Rocket, Headphones, MessageSquare, PhoneCall } from "lucide-react";
 
 interface SalesDashboardStatsProps {
     total: number;
     notContacted: number;
-    contacted: number;
+    messaged?: number;
+    called?: number;
+    contacted?: number;
     onboarded: number;
     upgraded?: number;
     overdue: number;
@@ -15,7 +17,9 @@ interface SalesDashboardStatsProps {
 export default function SalesDashboardStats({
     total,
     notContacted,
-    contacted,
+    messaged = 0,
+    called = 0,
+    contacted = 0,
     onboarded,
     upgraded = 0,
     overdue,
@@ -45,6 +49,22 @@ export default function SalesDashboardStats({
             bg: "bg-slate-50",
             iconColor: "text-slate-500",
             border: "border-slate-200",
+        },
+        {
+            label: "Messaged",
+            value: messaged,
+            icon: <MessageSquare className="w-5 h-5" />,
+            bg: "bg-blue-50",
+            iconColor: "text-blue-600",
+            border: "border-blue-100",
+        },
+        {
+            label: "Called",
+            value: called,
+            icon: <PhoneCall className="w-5 h-5" />,
+            bg: "bg-cyan-50",
+            iconColor: "text-cyan-600",
+            border: "border-cyan-100",
         },
         {
             label: "Contacted",

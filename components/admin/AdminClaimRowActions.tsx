@@ -80,36 +80,36 @@ export function buildApprovalWhatsAppMessage(claim: ClaimData): string {
   const managerName = claim.fullName || claim.user?.name || "Manager";
   const instituteName = claim.institute?.name || "Your Institute";
 
-  return `🎉 *Congratulations ${managerName}!*
+  return `\u{1F389} *Congratulations ${managerName}!*
 
 We are pleased to inform you that your claim request for *${instituteName}* has been officially verified & *APPROVED* on AcademyFind!
 
 You now have full manager access to your profile:
 
-🌐 *View Your Public Listing:*
+\u{1F310} *View Your Public Listing:*
 ${publicListingUrl}
 
-📊 *Access Manager Dashboard:*
+\u{1F4CA} *Access Manager Dashboard:*
 ${managerDashboardUrl}
 
 *What you can do in your dashboard:*
-✅ Update institute info, courses, & fee structure
-✅ Add batches, facilities & gallery photos
-✅ View student enquiry leads & callbacks
-✅ Respond to student reviews
+\u2705 Update institute info, courses, & fee structure
+\u2705 Add batches, facilities & gallery photos
+\u2705 View student enquiry leads & callbacks
+\u2705 Respond to student reviews
 
 If you need any assistance, feel free to reply directly to this message.
 
 Best Regards,
 *Team AcademyFind*
-🌐 www.academyfind.com`;
+\u{1F310} www.academyfind.com`;
 }
 
 export function buildApprovalWhatsAppUrl(claim: ClaimData): string {
   const waPhone = formatWhatsAppNumber(claim.phone);
   if (!waPhone) return "";
   const message = buildApprovalWhatsAppMessage(claim);
-  return `https://wa.me/${waPhone}?text=${encodeURIComponent(message)}`;
+  return `https://api.whatsapp.com/send?phone=${waPhone}&text=${encodeURIComponent(message)}`;
 }
 
 export default function AdminClaimRowActions({

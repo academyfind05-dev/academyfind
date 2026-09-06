@@ -88,8 +88,8 @@ export default async function AdminSalesManagerPage({
     // Compute stats for each manager
     const managersWithStats = managers.map((m: any) => {
         const total = m.salesAssignments.length;
-        const onboarded = m.salesAssignments.filter((a: any) => a.contactStatus === "ONBOARDED").length;
-        const contacted = m.salesAssignments.filter((a: any) => a.contactStatus === "CONTACTED").length;
+        const onboarded = m.salesAssignments.filter((a: any) => a.contactStatus === "ONBOARDED" || a.contactStatus === "UPGRADED").length;
+        const contacted = m.salesAssignments.filter((a: any) => a.contactStatus === "CONTACTED" || a.contactStatus === "MESSAGED" || a.contactStatus === "CALLED").length;
         const notContacted = m.salesAssignments.filter((a: any) => a.contactStatus === "NOT_CONTACTED").length;
         const overdue = m.salesAssignments.filter((a: any) =>
             a.deadline && new Date(a.deadline) < now && a.contactStatus !== "ONBOARDED"

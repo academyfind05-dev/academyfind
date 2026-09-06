@@ -33,7 +33,7 @@ export default function AdminClaimWhatsAppButton({
   if (!waNumber) return null;
 
   const defaultGreeting = `Hi ${managerName || "Manager"}, this is from AcademyFind regarding your ownership claim request for ${instituteName || "your institute"}.`;
-  const whatsappUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(defaultGreeting)}`;
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${waNumber}&text=${encodeURIComponent(defaultGreeting)}`;
 
   return (
     <a

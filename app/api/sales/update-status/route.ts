@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
             remark: remark || null,
         };
 
-        if (contactStatus === "CONTACTED") {
+        if (contactStatus === "CONTACTED" || contactStatus === "MESSAGED" || contactStatus === "CALLED") {
             updateData.interest = interest || null;
             updateData.contactedAt = assignment.contactedAt || new Date();
             // Clear onboarded fields if moving back

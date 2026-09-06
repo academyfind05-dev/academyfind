@@ -165,8 +165,8 @@ export default async function AdminSalesManagerDetailPage({
 
     const now = new Date();
     const total = assignments.length;
-    const onboarded = assignments.filter((a: any)=> a.contactStatus === "ONBOARDED").length;
-    const contacted = assignments.filter((a:any) => a.contactStatus === "CONTACTED").length;
+    const onboarded = assignments.filter((a: any)=> a.contactStatus === "ONBOARDED" || a.contactStatus === "UPGRADED").length;
+    const contacted = assignments.filter((a:any) => a.contactStatus === "CONTACTED" || a.contactStatus === "MESSAGED" || a.contactStatus === "CALLED").length;
     const notContacted = assignments.filter((a: any) => a.contactStatus === "NOT_CONTACTED").length;
     const overdue = assignments.filter((a:any) =>
         a.deadline && new Date(a.deadline) < now && a.contactStatus !== "ONBOARDED"

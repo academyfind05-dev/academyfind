@@ -1632,6 +1632,8 @@ enum SubscriptionPlan {
 enum ContactStatus {
   NOT_CONTACTED
   CONTACTED
+  MESSAGED
+  CALLED
   IN_PROCESS
   ONBOARDED
   UPGRADED

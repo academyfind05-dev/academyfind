@@ -44,6 +44,7 @@ const adminBlogSchema = z.object({
     status: z.enum([
       "DRAFT",
       "PENDING_REVIEW",
+      "CONTACTED",
       "SCHEDULED",
       "PUBLISHED",
       "REJECTED",
@@ -346,7 +347,7 @@ export async function deleteAdminBlogPost(postId: string) {
   }
 }
 
-export async function updateAdminBlogStatus(postId: string, status: "PUBLISHED" | "REJECTED") {
+export async function updateAdminBlogStatus(postId: string, status: "PUBLISHED" | "REJECTED" | "CONTACTED") {
   try {
     const adminUser = await requireAdmin();
     const existing = await prisma.blogPost.findUnique({
@@ -414,7 +415,7 @@ export async function updateAdminBlogStatus(postId: string, status: "PUBLISHED" 
           console.error("Error sending blog approval email:", e);
         }
       }
-    } else if (status === "REJECTED") {
+    } else if (status === "REJECTED" || status === "CONTACTED") {
       await deleteBlogPostFromMeili(postId);
     }
 

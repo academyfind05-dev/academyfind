@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
-import { Archive, ArchiveRestore, ExternalLink, Loader2, Pencil, Trash2, Check, X, BarChart2 } from "lucide-react";
+import { Archive, ArchiveRestore, ExternalLink, Loader2, Pencil, Trash2, Check, X, BarChart2, MessageSquare } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
+import { formatWhatsAppNumber } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,11 +21,15 @@ export default function AdminBlogActions({
   slug,
   isArchived,
   status,
+  authorPhone,
+  authorName,
 }: {
   postId: string;
   slug: string;
   isArchived: boolean;
   status: string;
+  authorPhone?: string | null;
+  authorName?: string | null;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -53,14 +59,20 @@ export default function AdminBlogActions({
     });
   };
 
-  const updateStatus = (newStatus: "PUBLISHED" | "REJECTED") => {
+  const updateStatus = (newStatus: "PUBLISHED" | "REJECTED" | "CONTACTED") => {
     startTransition(async () => {
       const result = await updateAdminBlogStatus(postId, newStatus);
       if (!result.success) {
         toast.error(result.error ?? `Unable to update post status.`);
         return;
       }
-      toast.success(newStatus === "PUBLISHED" ? "Post published." : "Post rejected.");
+      toast.success(
+        newStatus === "PUBLISHED"
+          ? "Post published."
+          : newStatus === "REJECTED"
+          ? "Post rejected."
+          : "Post marked as Messaged."
+      );
       router.refresh();
     });
   };
@@ -83,9 +95,11 @@ export default function AdminBlogActions({
     });
   };
 
+  const formattedWaPhone = authorPhone ? formatWhatsAppNumber(authorPhone) : "";
+
   return (
     <div className="flex items-center justify-end gap-1">
-      {status === "PENDING_REVIEW" && (
+      {(status === "PENDING_REVIEW" || status === "CONTACTED") && (
         <>
           <Button
             type="button"
@@ -113,6 +127,34 @@ export default function AdminBlogActions({
             {isPending ? <Loader2 className="animate-spin size-4 mr-1" /> : <X className="size-4 mr-1" />}
             Reject
           </Button>
+          {status !== "CONTACTED" && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={isPending}
+              onClick={() => updateStatus("CONTACTED")}
+              aria-label="Mark as Messaged"
+              title="Mark as Messaged"
+              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2"
+            >
+              {isPending ? <Loader2 className="animate-spin size-4 mr-1" /> : <MessageSquare className="size-4 mr-1" />}
+              Messaged
+            </Button>
+          )}
+          {formattedWaPhone && (
+            <a
+              href={`https://api.whatsapp.com/send?phone=${formattedWaPhone}&text=${encodeURIComponent(
+                `Hi ${authorName || "Contributor"}, this is from AcademyFind editorial team regarding your blog submission "${slug}".`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Chat with author on WhatsApp"
+              className="inline-flex items-center justify-center size-8 rounded-lg text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
+            >
+              <FaWhatsapp className="size-4 text-[#25D366]" />
+            </a>
+          )}
         </>
       )}
       <Button asChild type="button" variant="ghost" size="icon-sm" title="View post">

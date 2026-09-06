@@ -113,7 +113,7 @@ export default async function AdminLayout({
                 }
             }
         }),
-        prisma.blogPost.count({ where: { status: "PENDING_REVIEW" } }),
+        prisma.blogPost.count({ where: { status: { in: ["PENDING_REVIEW", "CONTACTED"] } } }),
         prisma.advertisement.count({ where: { status: "PENDING" } }),
         prisma.inboundLead.count({ where: { status: "NEW" } }),
     ]);

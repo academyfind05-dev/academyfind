@@ -2272,6 +2272,8 @@ enum BlogStatus {
 
   PENDING_REVIEW
 
+  CONTACTED
+
   SCHEDULED
 
   PUBLISHED

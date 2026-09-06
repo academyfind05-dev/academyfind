@@ -36,6 +36,7 @@ const ALL = "ALL";
 const statusStyles: Record<BlogStatus, string> = {
   DRAFT: "bg-stone-100 text-stone-800",
   PENDING_REVIEW: "bg-violet-100 text-violet-800",
+  CONTACTED: "bg-sky-100 text-sky-800 border border-sky-200",
   SCHEDULED: "bg-white/80 backdrop-blur-md border border-stone-200/50 text-stone-900 shadow-sm",
   PUBLISHED: "bg-emerald-100 text-emerald-800",
   REJECTED: "bg-red-100 text-red-800",
@@ -66,7 +67,18 @@ interface PostListItem {
   updatedAt: Date;
   publishedAt: Date | null;
   brand: { id: string; name: string; avatarUrl: string | null } | null;
-  authorProfile: { displayName: string } | null;
+  authorProfile: {
+    displayName: string;
+    user?: {
+      name: string | null;
+      phone: string | null;
+      email: string | null;
+    } | null;
+  } | null;
+  relatedInstitute?: {
+    name: string;
+    phone: string | null;
+  } | null;
   category: { name: string } | null;
 }
 
@@ -119,7 +131,22 @@ export default async function AdminBlogPage({
           select: { id: true, name: true, avatarUrl: true },
         },
         authorProfile: {
-          select: { displayName: true },
+          select: {
+            displayName: true,
+            user: {
+              select: {
+                name: true,
+                phone: true,
+                email: true,
+              },
+            },
+          },
+        },
+        relatedInstitute: {
+          select: {
+            name: true,
+            phone: true,
+          },
         },
         category: {
           select: { name: true },
@@ -176,21 +203,27 @@ export default async function AdminBlogPage({
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
           <p className="text-xs font-semibold uppercase text-slate-500">Total</p>
           <p className="mt-1 text-2xl font-bold text-slate-900">{total}</p>
-        </div>
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-          <p className="text-xs font-semibold uppercase text-emerald-700">Published</p>
-          <p className="mt-1 text-2xl font-bold text-emerald-900">
-            {counts.PUBLISHED ?? 0}
-          </p>
         </div>
         <div className="rounded-2xl border border-violet-200 bg-violet-50 p-4">
           <p className="text-xs font-semibold uppercase text-violet-700">Awaiting review</p>
           <p className="mt-1 text-2xl font-bold text-violet-900">
             {counts.PENDING_REVIEW ?? 0}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4">
+          <p className="text-xs font-semibold uppercase text-sky-700">Messaged</p>
+          <p className="mt-1 text-2xl font-bold text-sky-900">
+            {counts.CONTACTED ?? 0}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+          <p className="text-xs font-semibold uppercase text-emerald-700">Published</p>
+          <p className="mt-1 text-2xl font-bold text-emerald-900">
+            {counts.PUBLISHED ?? 0}
           </p>
         </div>
       </div>
@@ -261,7 +294,7 @@ export default async function AdminBlogPage({
                 </td>
                 <td className="p-4">
                   <Badge className={statusStyles[post.status as BlogStatus]}>
-                    {post.status.toLocaleLowerCase().replaceAll("_", " ")}
+                    {post.status === "CONTACTED" ? "Messaged" : post.status.toLocaleLowerCase().replaceAll("_", " ")}
                   </Badge>
                   <p className="mt-1 text-xs text-slate-400">
                     {post.visibility?.toLocaleLowerCase()}
@@ -291,6 +324,8 @@ export default async function AdminBlogPage({
                     slug={post.slug}
                     isArchived={post.status === "ARCHIVED"}
                     status={post.status}
+                    authorPhone={post.authorProfile?.user?.phone || post.relatedInstitute?.phone}
+                    authorName={post.authorProfile?.displayName || post.authorProfile?.user?.name || post.relatedInstitute?.name}
                   />
                 </td>
               </tr>

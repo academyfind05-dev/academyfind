@@ -25,13 +25,13 @@ export async function getMyPosts({
     },
 
     ...(status && {
-      status,
+      status: status === "PENDING_REVIEW" ? { in: ["PENDING_REVIEW", "CONTACTED"] as any } : status,
     }),
   };
 
   const [posts, total, stats] = await Promise.all([
     prisma.blogPost.findMany({
-      where,
+      where: where as any,
 
       include: {
         category: true,
@@ -48,7 +48,7 @@ export async function getMyPosts({
     }),
 
     prisma.blogPost.count({
-      where,
+      where: where as any,
     }),
 
     prisma.blogPost.groupBy({
@@ -70,8 +70,13 @@ export async function getMyPosts({
     stats.map((item: { status: string; _count: number }) => [item.status, item._count])
   );
 
+  const mappedPosts = posts.map((post) => ({
+    ...post,
+    status: post.status === "CONTACTED" ? ("PENDING_REVIEW" as BlogStatus) : post.status,
+  }));
+
   return {
-    posts,
+    posts: mappedPosts,
 
     total,
 
@@ -88,7 +93,7 @@ export async function getMyPosts({
     stats: {
       draft: statsMap.DRAFT ?? 0,
 
-      pendingReview: statsMap.PENDING_REVIEW ?? 0,
+      pendingReview: (statsMap.PENDING_REVIEW ?? 0) + (statsMap.CONTACTED ?? 0),
 
       scheduled: statsMap.SCHEDULED ?? 0,
 

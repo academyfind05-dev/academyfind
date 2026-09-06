@@ -136,6 +136,7 @@ export type BlogEditorSaveInput = {
     status:
       | "DRAFT"
       | "PENDING_REVIEW"
+      | "CONTACTED"
       | "SCHEDULED"
       | "PUBLISHED"
       | "REJECTED"

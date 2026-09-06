@@ -99,7 +99,7 @@ export default function AdminBlogFilter({
           <SelectItem value={ALL}>All statuses</SelectItem>
           {Object.values(BlogStatus).map((item: string) => (
             <SelectItem key={item} value={item}>
-              {item.toLocaleLowerCase().replaceAll("_", " ")}
+              {item === "CONTACTED" ? "Messaged" : item.toLocaleLowerCase().replaceAll("_", " ")}
             </SelectItem>
           ))}
         </SelectContent>

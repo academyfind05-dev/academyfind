@@ -314,6 +314,7 @@ export type ReviewStatus = (typeof ReviewStatus)[keyof typeof ReviewStatus]
 export const BlogStatus = {
   DRAFT: 'DRAFT',
   PENDING_REVIEW: 'PENDING_REVIEW',
+  CONTACTED: 'CONTACTED',
   SCHEDULED: 'SCHEDULED',
   PUBLISHED: 'PUBLISHED',
   REJECTED: 'REJECTED',

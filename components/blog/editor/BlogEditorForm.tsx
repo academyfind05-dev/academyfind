@@ -1089,6 +1089,7 @@ export default function BlogEditorForm({
                       <SelectItem value="PENDING_REVIEW">
                         Pending review
                       </SelectItem>
+                      <SelectItem value="CONTACTED">Messaged</SelectItem>
                       <SelectItem value="SCHEDULED">Scheduled</SelectItem>
                       <SelectItem value="PUBLISHED">Published</SelectItem>
                       <SelectItem value="REJECTED">Rejected</SelectItem>

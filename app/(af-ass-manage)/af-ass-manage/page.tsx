@@ -44,7 +44,7 @@ export default async function AdminDashboardPage() {
         prisma.lifeCoachRequest.count({ where: { status: "PENDING" } }),
         prisma.messageReport.count({ where: { status: "PENDING" } }),
         prisma.instituteRequest.count({ where: { status: "PENDING" } }),
-        prisma.blogPost.count({ where: { status: "PENDING_REVIEW" } }),
+        prisma.blogPost.count({ where: { status: { in: ["PENDING_REVIEW", "CONTACTED"] } } }),
 
         // Latest 5 Pending Claims
         prisma.instituteClaim.findMany({

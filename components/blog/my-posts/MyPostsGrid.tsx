@@ -45,6 +45,9 @@ const statusStyles: Record<BlogStatus, string> = {
   PENDING_REVIEW:
     "bg-violet-100 text-violet-700 border-violet-200",
 
+  CONTACTED:
+    "bg-violet-100 text-violet-700 border-violet-200",
+
   SCHEDULED:
     "bg-blue-100 text-blue-700 border-blue-200",
 
@@ -61,6 +64,7 @@ const statusStyles: Record<BlogStatus, string> = {
 const statusLabels: Record<BlogStatus, string> = {
   DRAFT: "Draft",
   PENDING_REVIEW: "Pending Review",
+  CONTACTED: "Pending Review",
   SCHEDULED: "Scheduled",
   PUBLISHED: "Published",
   REJECTED: "Rejected",

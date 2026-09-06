@@ -70,7 +70,7 @@ export async function getMyPosts({
     stats.map((item: { status: string; _count: number }) => [item.status, item._count])
   );
 
-  const mappedPosts = posts.map((post) => ({
+  const mappedPosts = posts.map((post: any) => ({
     ...post,
     status: post.status === "CONTACTED" ? ("PENDING_REVIEW" as BlogStatus) : post.status,
   }));

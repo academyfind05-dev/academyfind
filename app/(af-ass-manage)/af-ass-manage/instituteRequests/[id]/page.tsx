@@ -9,6 +9,7 @@ import { deleteInstituteRequestAction } from "../actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import AdminRequestStatusForm from "@/components/admin/AdminRequestStatusForm";
+import AdminClaimWhatsAppButton from "@/components/admin/AdminClaimWhatsAppButton";
 
 export default async function InstituteRequestDetailPage({
     params
@@ -130,7 +131,16 @@ export default async function InstituteRequestDetailPage({
                                     </div>
                                     <div>
                                         <div className="text-xs text-stone-500 font-bold uppercase tracking-wider mb-1">Owner Phone</div>
-                                        <div className="font-semibold text-stone-800">{request.ownerPhone || "—"}</div>
+                                        <div className="font-semibold text-stone-800 flex items-center gap-2 flex-wrap">
+                                            <span>{request.ownerPhone || "—"}</span>
+                                            {request.ownerPhone && (
+                                                <AdminClaimWhatsAppButton
+                                                    phone={request.ownerPhone}
+                                                    managerName={request.ownerName || "Owner"}
+                                                    instituteName={request.institute?.name}
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="col-span-2">
                                         <div className="text-xs text-stone-500 font-bold uppercase tracking-wider mb-1">Designation</div>
@@ -158,7 +168,14 @@ export default async function InstituteRequestDetailPage({
                                     </div>
                                     <div>
                                         <div className="text-xs text-stone-500 font-bold uppercase tracking-wider mb-1">Claimer Phone</div>
-                                        <div className="font-semibold text-stone-800">{claim.phone}</div>
+                                        <div className="font-semibold text-stone-800 flex items-center gap-2 flex-wrap">
+                                            <span>{claim.phone}</span>
+                                            <AdminClaimWhatsAppButton
+                                                phone={claim.phone}
+                                                managerName={claim.fullName}
+                                                instituteName={request.institute?.name}
+                                            />
+                                        </div>
                                     </div>
                                     <div>
                                         <div className="text-xs text-stone-500 font-bold uppercase tracking-wider mb-1">Role</div>

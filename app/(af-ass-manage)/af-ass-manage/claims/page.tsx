@@ -1,11 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { format } from "date-fns";
 import { formatIST } from "@/lib/utils";
-import { updateClaimStatus } from "@/lib/User/admin/adminClaim";
-import { ShieldAlert, Building2, User, Phone, Mail, FileText, CheckCircle, XCircle, Filter } from "lucide-react";
-import AdminDeleteButton from "@/components/admin/AdminDeleteButton";
+import { Building2, User, Phone, Mail, FileText, Filter } from "lucide-react";
 import { deleteClaimAction } from "./actions";
+import AdminClaimWhatsAppButton from "@/components/admin/AdminClaimWhatsAppButton";
+import AdminClaimRowActions from "@/components/admin/AdminClaimRowActions";
 
 export default async function AdminClaimPage({
   searchParams
@@ -26,10 +25,16 @@ export default async function AdminClaimPage({
     where: whereCondition,
     include: {
       institute: {
-        select: { name: true, address: true, city: { select: { name: true } } }
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          address: true,
+          city: { select: { name: true } }
+        }
       },
       user: {
-        select: { name: true, email: true }
+        select: { id: true, name: true, email: true }
       }
     },
     orderBy: { createdAt: "desc" }
@@ -131,9 +136,20 @@ export default async function AdminClaimPage({
                       <div className="font-semibold text-slate-900 flex items-center gap-1.5">
                         <User className="w-3.5 h-3.5 text-slate-400" /> {claim.fullName}
                       </div>
-                      <div className="text-xs text-slate-500 mt-1 space-y-0.5">
-                        <div className="flex items-center gap-1.5"><Mail className="w-3 h-3" /> {claim.email}</div>
-                        <div className="flex items-center gap-1.5"><Phone className="w-3 h-3" /> {claim.phone}</div>
+                      <div className="text-xs text-slate-500 mt-1 space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <Mail className="w-3 h-3 text-slate-400" /> {claim.email}
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="flex items-center gap-1.5">
+                            <Phone className="w-3 h-3 text-slate-400" /> {claim.phone}
+                          </span>
+                          <AdminClaimWhatsAppButton
+                            phone={claim.phone}
+                            managerName={claim.fullName}
+                            instituteName={claim.institute?.name}
+                          />
+                        </div>
                       </div>
                       <span className="inline-block mt-2 text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider border border-indigo-100">
                         Role: {claim.role}
@@ -159,36 +175,10 @@ export default async function AdminClaimPage({
 
                     {/* Actions Buttons */}
                     <td className="p-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        {claim.status === "PENDING" ? (
-                          <>
-                            {/* Reject Button Form */}
-                            <form action={async () => {
-                              "use server"
-                              await updateClaimStatus(claim.id, "REJECTED")
-                            }}>
-                              <button className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition shadow-sm cursor-pointer">
-                                <XCircle className="w-3.5 h-3.5" /> Reject
-                              </button>
-                            </form>
-
-                            {/* Approve Button Form */}
-                            <form action={async () => {
-                              "use server"
-                              await updateClaimStatus(claim.id, "APPROVED")
-                            }}>
-                              <button className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-white bg-emerald-600 border border-emerald-700 rounded-lg hover:bg-emerald-700 transition shadow-sm cursor-pointer">
-                                <CheckCircle className="w-3.5 h-3.5" /> Approve
-                              </button>
-                            </form>
-                          </>
-                        ) : (
-                          <span className="text-xs font-medium text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
-                            Processed
-                          </span>
-                        )}
-                        <AdminDeleteButton id={claim.id} onDelete={deleteClaimAction} title="Delete Claim?" />
-                      </div>
+                      <AdminClaimRowActions
+                        claim={claim}
+                        onDeleteClaim={deleteClaimAction}
+                      />
                     </td>
                   </tr>
                 ))

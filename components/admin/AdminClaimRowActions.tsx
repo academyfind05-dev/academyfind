@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle, XCircle, Loader2, Copy, Check, ExternalLink } from "lucide-react";
+import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { updateClaimStatus } from "@/lib/User/admin/adminClaim";
@@ -121,9 +121,7 @@ export default function AdminClaimRowActions({
   const [isRejecting, setIsRejecting] = useState(false);
   const [isNotifyOpen, setIsNotifyOpen] = useState(false);
   const [isRejectConfirmOpen, setIsRejectConfirmOpen] = useState(false);
-  const [copiedLink, setCopiedLink] = useState<string | null>(null);
 
-  const { publicListingUrl, managerDashboardUrl } = buildApprovalLinks(claim);
   const waUrl = buildApprovalWhatsAppUrl(claim);
 
   const handleApprove = async () => {
@@ -152,17 +150,6 @@ export default function AdminClaimRowActions({
       setIsNotifyOpen(false);
     } else {
       toast.error("No valid phone number for WhatsApp");
-    }
-  };
-
-  const handleCopy = async (text: string, label: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedLink(label);
-      toast.success(`${label} copied!`);
-      setTimeout(() => setCopiedLink(null), 2000);
-    } catch {
-      toast.error("Failed to copy");
     }
   };
 
@@ -268,78 +255,15 @@ export default function AdminClaimRowActions({
             </div>
           </DialogHeader>
 
-          {/* Details & Links Card */}
-          <div className="mt-4 space-y-3">
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-xs text-slate-700 space-y-1">
-              <div className="font-bold text-slate-900">{claim.institute?.name || "Institute"}</div>
-              <div className="text-slate-500">
-                Manager: <span className="font-semibold text-slate-700">{claim.fullName}</span> ({claim.phone})
-              </div>
+          {/* Details Card */}
+          <div className="mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-200/80 text-xs text-slate-700 space-y-1.5">
+            <div className="font-bold text-slate-900 text-sm">{claim.institute?.name || "Institute"}</div>
+            <div className="text-slate-500">
+              Manager: <span className="font-semibold text-slate-700">{claim.fullName}</span> ({claim.phone})
             </div>
-
-            {/* Public Listing Link */}
-            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
-              <div className="flex items-center justify-between text-slate-500 font-semibold mb-1">
-                <span>🌐 Public Listing Link:</span>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(publicListingUrl, "Listing Link")}
-                    className="text-slate-500 hover:text-slate-800 transition"
-                    title="Copy Link"
-                  >
-                    {copiedLink === "Listing Link" ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    ) : (
-                      <Copy className="w-3.5 h-3.5" />
-                    )}
-                  </button>
-                  <a
-                    href={publicListingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-700"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-              <div className="font-mono text-[11px] text-slate-600 truncate bg-white px-2 py-1 rounded border border-slate-200">
-                {publicListingUrl}
-              </div>
-            </div>
-
-            {/* Manager Dashboard Link */}
-            <div className="p-2.5 bg-amber-50/50 rounded-xl border border-amber-200 text-xs">
-              <div className="flex items-center justify-between text-amber-800 font-semibold mb-1">
-                <span>📊 Manager Dashboard Link:</span>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(managerDashboardUrl, "Dashboard Link")}
-                    className="text-amber-700 hover:text-amber-900 transition"
-                    title="Copy Link"
-                  >
-                    {copiedLink === "Dashboard Link" ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    ) : (
-                      <Copy className="w-3.5 h-3.5" />
-                    )}
-                  </button>
-                  <a
-                    href={managerDashboardUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-700 hover:text-amber-800"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-              <div className="font-mono text-[11px] text-slate-600 truncate bg-white px-2 py-1 rounded border border-amber-200">
-                {managerDashboardUrl}
-              </div>
-            </div>
+            <p className="text-slate-500 pt-1 text-[11px] leading-relaxed">
+              Click below to send their public listing and dashboard links directly on WhatsApp.
+            </p>
           </div>
 
           {/* Action Buttons */}
@@ -355,7 +279,7 @@ export default function AdminClaimRowActions({
             <button
               type="button"
               onClick={handleOpenWhatsApp}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow-sm transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow-md hover:shadow-lg transition-all cursor-pointer active:scale-95"
             >
               <FaWhatsapp className="w-4 h-4" />
               <span>Send via WhatsApp</span>

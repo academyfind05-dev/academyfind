@@ -244,12 +244,12 @@ export default async function ManagerDashBoardLayout({
                             locked={plan === "BASIC" || plan === "VERIFIED"}
                         />
 
-                        {false && <ManagerSidebarLink
+                        <ManagerSidebarLink
                             href={`/manager/${instituteId}/subscription`}
                             icon={<CreditCard />}
-                            label="Billing & Plan"
+                            label="Subscription"
                             className="mt-6 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-800 hover:from-amber-100 hover:to-orange-100 border border-amber-200/50 shadow-sm"
-                        />}
+                        />
                     </nav>
                 </ManagerSidebarWrapper>
 

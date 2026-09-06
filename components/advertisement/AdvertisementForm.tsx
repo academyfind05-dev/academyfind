@@ -10,11 +10,11 @@ import { submitAdvertisement } from "@/lib/advertisement/actions";
 export default function AdvertisementForm({
     user,
     bankDetails = {
-        upiId: "9045639340@mbk",
-        bankName: "Punjab National Bank",
-        accountName: "JNGEE International Private Limited",
-        accountNumber: "4876002100004743",
-        ifscCode: "PUNB0487600"
+        upiId: process.env.PAYMENT_UPI_ID || "",
+        bankName: process.env.PAYMENT_BANK_NAME || "",
+        accountName: process.env.PAYMENT_ACCOUNT_NAME || "",
+        accountNumber: process.env.PAYMENT_ACCOUNT_NUMBER || "",
+        ifscCode: process.env.PAYMENT_IFSC_CODE || ""
     },
     settings
 }: {

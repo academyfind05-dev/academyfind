@@ -37,12 +37,12 @@ export default async function WalletCheckoutPage({ params }: { params: Promise<{
 
     return (
         <div className="py-10">
-            <CheckoutForm 
+            <CheckoutForm
                 instituteId="wallet-recharge" // Just a placeholder, as it's not an institute subscription
-                plan={formattedPlan} 
-                BillingCycle="MONTHLY" 
-                upiId={upiId} 
-                bankDetails={bankDetails} 
+                plan={formattedPlan}
+                BillingCycle="MONTHLY"
+                upiId={upiId}
+                bankDetails={bankDetails}
             />
         </div>
     );

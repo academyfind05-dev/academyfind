@@ -106,11 +106,11 @@ export default async function AdvertisePage() {
                                         user={dbUser}
                                         settings={settings}
                                         bankDetails={{
-                                            upiId: process.env.PAYMENT_UPI_ID || "9045639340@mbk",
-                                            bankName: process.env.PAYMENT_BANK_NAME || "Punjab National Bank",
-                                            accountName: process.env.PAYMENT_ACCOUNT_NAME || "JNGEE International Private Limited",
-                                            accountNumber: process.env.PAYMENT_ACCOUNT_NUMBER || "4876002100004743",
-                                            ifscCode: process.env.PAYMENT_IFSC_CODE || "PUNB0487600"
+                                            upiId: process.env.PAYMENT_UPI_ID || "",
+                                            bankName: process.env.PAYMENT_BANK_NAME || "",
+                                            accountName: process.env.PAYMENT_ACCOUNT_NAME || "",
+                                            accountNumber: process.env.PAYMENT_ACCOUNT_NUMBER || "",
+                                            ifscCode: process.env.PAYMENT_IFSC_CODE || ""
                                         }}
                                     />
                                 ) : (
